@@ -8,6 +8,7 @@ use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\PerhitunganController;
 use App\Http\Controllers\GuestDaerahController;
 use App\Http\Controllers\GuestController;
+use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,18 +49,40 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/dashboard', [DashboardController::class, 'indexAdmin'])->name('dashboard');
 
     // Kriteria CRUD
-    Route::resource('kriteria', KriteriaController::class)->except(['show']);
+    Route::resource('kriteria', KriteriaController::class)->parameters([
+        'kriteria' => 'kriteria'
+    ])->except(['show']);
 
     // Daerah CRUD
-    Route::resource('daerah', DaerahController::class)->except(['show']);
+    Route::resource('daerah', DaerahController::class)->parameters([
+        'daerah' => 'daerah'
+    ])->except(['show']);
     
-    // Input Nilai Daerah
+    // Input Nilai Daerah - OLD (Keep strictly for compat or redirect)
     Route::get('/daerah/{daerah}/nilai', [DaerahController::class, 'nilai'])->name('daerah.nilai');
     Route::post('/daerah/{daerah}/nilai', [DaerahController::class, 'nilaiStoreOrUpdate'])->name('daerah.nilai.store');
+
+    // Data Penilaian - NEW
+    Route::get('/penilaian', [PenilaianController::class, 'index'])->name('penilaian.index');
+    Route::get('/penilaian/{penilaian}/edit', [PenilaianController::class, 'edit'])->name('penilaian.edit');
+    Route::put('/penilaian/{penilaian}', [PenilaianController::class, 'update'])->name('penilaian.update');
 
     // Bobot
     Route::get('/bobot', [BobotController::class, 'index'])->name('bobot.index');
     Route::post('/bobot', [BobotController::class, 'update'])->name('bobot.update');
+
+    // Perhitungan & Hasil Akhir
+    Route::get('/perhitungan', [PerhitunganController::class, 'dataPerhitungan'])->name('perhitungan.index');
+    Route::get('/hasil', [PerhitunganController::class, 'dataHasilAkhir'])->name('hasil.index');
+
+    // User Management
+    Route::resource('user', \App\Http\Controllers\UserController::class)->parameters([
+        'user' => 'user'
+    ])->except(['show']);
+
+    // Profile
+    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 });
 
 // User Routes

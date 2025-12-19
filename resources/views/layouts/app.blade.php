@@ -14,6 +14,17 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
+        @media print {
+            .no-print, nav, header {
+                display: none !important;
+            }
+            main {
+                margin: 0 !important;
+                width: 100% !important;
+            }
+        }
+    </style>
+    <style>
         @keyframes float {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
@@ -63,7 +74,7 @@
                          <!-- Copy of Sidebar Links (Ideally extract to a partial, but inline for now to avoid complexity) -->
                          <a href="{{ route('admin.dashboard') }}" class="text-emerald-100 hover:bg-emerald-700 block px-3 py-2 rounded-md text-base font-medium">Menu Admin (Jika Login)</a>
                          <a href="{{ route('user.dashboard') }}" class="text-emerald-100 hover:bg-emerald-700 block px-3 py-2 rounded-md text-base font-medium">Dashboard User</a>
-                         <a href="{{ route('user.analisis.index') }}" class="text-emerald-100 hover:bg-emerald-700 block px-3 py-2 rounded-md text-base font-medium">Analisis</a>
+
                          <a href="{{ route('login') }}" class="text-emerald-100 hover:bg-emerald-700 block px-3 py-2 rounded-md text-base font-medium mt-4 border-t border-emerald-700 pt-4">Login / Logout</a>
                     </nav>
                 </div>
@@ -78,7 +89,7 @@
 
             <main class="flex-1 relative overflow-y-auto focus:outline-none">
                 <div class="py-6">
-                    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                    <div class="w-full mx-auto px-4 sm:px-6 md:px-8">
                         @yield('content')
                     </div>
                 </div>

@@ -10,7 +10,7 @@
             <p class="mt-1 max-w-2xl text-sm text-gray-500">Masukkan nilai untuk setiap kriteria pada daerah ini.</p>
             
             <div class="mt-5">
-                <form action="{{ route('admin.daerah.nilai.store', $daerah->id) }}" method="POST">
+                <form action="{{ route('admin.daerah.nilai.store', ['daerah' => $daerah->id]) }}" method="POST">
                     @csrf
                     <div class="space-y-6">
                         @foreach($kriterias as $kriteria)
@@ -19,10 +19,11 @@
                                 {{ $kriteria->nama_kriteria }} <span class="text-gray-400 text-xs">({{ ucfirst($kriteria->jenis) }})</span>
                             </label>
                             <div class="mt-1">
-                                <input type="number" step="0.01" name="nilai[{{ $kriteria->id }}]" id="kriteria_{{ $kriteria->id }}" 
+                                <input type="text" inputmode="decimal" name="nilai[{{ $kriteria->id }}]" id="kriteria_{{ $kriteria->id }}" 
                                     value="{{ $nilaiDaerah[$kriteria->id] ?? '' }}" required
                                     class="shadow-sm focus:ring-green-500 focus:border-green-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                                    placeholder="Masukkan nilai...">
+                                    placeholder="Masukkan nilai..."
+                                    oninput="this.value = this.value.replace(/[^0-9.,]/g, '').replace(/,/g, '.');">
                             </div>
                         </div>
                         @endforeach

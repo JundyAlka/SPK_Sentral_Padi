@@ -26,11 +26,11 @@ class RegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'user', // Default role
+            'role' => 'user', 
         ]);
 
         Auth::login($user);
 
-        return redirect()->route('user.dashboard')->with('success', 'Registrasi berhasil! Selamat datang.');
+        return redirect()->route('user.dashboard');
     }
 }

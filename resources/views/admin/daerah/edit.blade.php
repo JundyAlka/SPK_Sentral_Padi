@@ -6,7 +6,7 @@
 <div class="max-w-2xl mx-auto">
     <h1 class="text-2xl font-bold text-gray-900 mb-6">Edit Data Alternatif</h1>
 
-    <form action="{{ route('admin.daerah.update', $daerah->id) }}" method="POST" class="space-y-6">
+    <form action="{{ route('admin.daerah.update', ['daerah' => $daerah->id]) }}" method="POST" class="space-y-6">
         @csrf
         @method('PUT')
         
@@ -34,7 +34,7 @@
             <a href="{{ route('admin.daerah.index') }}" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
                 Batal
             </a>
-            <button type="submit" class="btn-primary px-6 py-3 rounded-lg text-white font-medium">
+            <button type="submit" class="px-6 py-3 rounded-lg text-white font-medium bg-emerald-600 hover:bg-emerald-700 transition duration-150 ease-in-out">
                 Update Data
             </button>
         </div>

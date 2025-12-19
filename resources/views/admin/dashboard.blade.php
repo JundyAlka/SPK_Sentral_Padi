@@ -79,14 +79,7 @@
                 <p class="mb-8 text-lg text-emerald-100 font-light leading-relaxed text-shadow-sm">
                     Kelola data kriteria, bobot, dan alternatif daerah untuk memastikan keakuratan hasil analisis SPK.
                 </p>
-                <div class="flex gap-4">
-                    <a href="{{ route('admin.daerah.create') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-bold rounded-full text-emerald-900 bg-white hover:bg-gray-100 shadow-lg transform transition hover:-translate-y-1">
-                        <svg class="mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                        </svg>
-                        Tambah Data Daerah
-                    </a>
-                </div>
+
             </div>
             <!-- Floating Modern Stats Logo -->
             <div class="hidden md:block">
@@ -95,10 +88,10 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <!-- Top Ranking Table -->
-        <div class="lg:col-span-2">
-            <div class="bg-white rounded-xl shadow overflow-hidden">
+        <div>
+            <div class="bg-white rounded-xl shadow overflow-hidden h-full">
                 <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
                     <h3 class="text-lg font-bold text-gray-800">Hasil Perankingan Saat Ini</h3>
                     <span class="text-xs bg-green-100 text-green-700 font-semibold px-2 py-1 rounded">SAW Method</span>
@@ -147,54 +140,62 @@
             </div>
         </div>
 
-        <!-- System Logs & Quick Actions -->
-        <div class="space-y-8">
-             <!-- Quick Actions Mockup -->
-             <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Aksi Cepat</h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <a href="{{ route('admin.kriteria.index') }}" class="flex flex-col items-center justify-center p-4 border rounded-lg hover:bg-emerald-50 hover:border-emerald-200 transition group cursor-pointer">
-                        <div class="p-2 bg-blue-100 rounded-lg text-blue-600 group-hover:bg-blue-200 mb-2">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                        </div>
-                        <span class="text-xs font-medium text-gray-600">Edit Bobot</span>
-                    </a>
-                    <a href="#" class="flex flex-col items-center justify-center p-4 border rounded-lg hover:bg-emerald-50 hover:border-emerald-200 transition group cursor-pointer opacity-50 cursor-not-allowed" title="Fitur Segera Hadir">
-                        <div class="p-2 bg-purple-100 rounded-lg text-purple-600 group-hover:bg-purple-200 mb-2">
-                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                        </div>
-                        <span class="text-xs font-medium text-gray-600">Cetak Laporan</span>
-                    </a>
+        <!-- Chart Section -->
+        <div>
+             <div class="bg-white rounded-xl shadow p-6 h-full">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Grafik Perankingan</h3>
+                <div class="relative h-64">
+                    <canvas id="adminRankingChart"></canvas>
                 </div>
-            </div>
-
-            <!-- Recent Activity (Static/Mock) -->
-            <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Aktivitas Terbaru</h3>
-                <ul class="space-y-4">
-                    <li class="flex items-start">
-                        <div class="flex-shrink-0 h-2 w-2 mt-2 rounded-full bg-green-500"></div>
-                        <div class="ml-3">
-                            <p class="text-sm text-gray-800">Sistem berhasil diupdate.</p>
-                            <span class="text-xs text-gray-400">Baru saja</span>
-                        </div>
-                    </li>
-                    <li class="flex items-start">
-                        <div class="flex-shrink-0 h-2 w-2 mt-2 rounded-full bg-blue-500"></div>
-                         <div class="ml-3">
-                            <p class="text-sm text-gray-800">Login Admin berhasil.</p>
-                            <span class="text-xs text-gray-400">5 menit yang lalu</span>
-                        </div>
-                    </li>
-                    <li class="flex items-start">
-                        <div class="flex-shrink-0 h-2 w-2 mt-2 rounded-full bg-gray-300"></div>
-                         <div class="ml-3">
-                            <p class="text-sm text-gray-500">User baru terdaftar.</p>
-                            <span class="text-xs text-gray-400">1 jam yang lalu</span>
-                        </div>
-                    </li>
-                </ul>
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const hasil = @json(array_slice($hasil, 0, 10)); 
+        
+        const ctx = document.getElementById('adminRankingChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: hasil.map(h => h.nama_daerah),
+                datasets: [{
+                    label: 'Skor SAW',
+                    data: hasil.map(h => h.skor_total),
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)', // Blue-500 with transparency
+                    borderColor: 'rgba(37, 99, 235, 1)', // Blue-600
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(255, 255, 255, 1)',
+                    pointBorderColor: 'rgba(37, 99, 235, 1)',
+                    pointRadius: 4,
+                    fill: true,
+                    tension: 0.3 // Smooth line
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { 
+                        beginAtZero: true, 
+                        max: 1,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+    });
+</script>
 @endsection

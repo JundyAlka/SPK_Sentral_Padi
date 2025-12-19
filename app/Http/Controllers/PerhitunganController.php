@@ -69,6 +69,24 @@ class PerhitunganController extends Controller
         return view('user.analisis.detail', compact('detailDaerah', 'kriterias'));
     }
 
+    // Admin: Data Perhitungan
+    public function dataPerhitungan()
+    {
+        $data = $this->hitungSAW();
+        return view('admin.perhitungan.index', [
+            'kriterias' => $data['kriterias'],
+            'hasil' => $data['hasil']
+        ]);
+    }
+
+    // Admin: Data Hasil Akhir
+    public function dataHasilAkhir()
+    {
+        $data = $this->hitungSAW();
+        $hasil = $data['hasil']; // Already sorted and ranked in hitungSAW
+        return view('admin.hasil.index', compact('hasil'));
+    }
+
     private function hitungSAW($namaDaerahInput = '') {
         try {
             // Attempt to get Real Data
@@ -158,11 +176,6 @@ class PerhitunganController extends Controller
                 'detail' => $detailNilai
             ];
         }
-
-        // Filter by search input if provided (and using Mock, real query usually does filtering before)
-        // Since we fetch all, we can filter here for displayed result if needed, 
-        // but 'proses' usually ranks ALL candidates. The input is usually just a Label for the report.
-        // So we keep all.
 
         usort($hasil, function ($a, $b) {
             return $b['skor_total'] <=> $a['skor_total'];

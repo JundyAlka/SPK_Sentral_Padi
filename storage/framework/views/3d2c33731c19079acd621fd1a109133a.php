@@ -47,13 +47,13 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div class="flex justify-end gap-2">
-                            <a href="<?php echo e(route('admin.daerah.nilai', $daerah->id)); ?>" class="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors" title="Input Nilai">
+                            <a href="<?php echo e(route('admin.daerah.nilai', ['daerah' => $daerah->id])); ?>" class="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors" title="Input Nilai">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                             </a>
-                            <a href="<?php echo e(route('admin.daerah.edit', $daerah->id)); ?>" class="p-2 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition-colors" title="Edit Data">
+                            <a href="<?php echo e(route('admin.daerah.edit', ['daerah' => $daerah->id])); ?>" class="p-2 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition-colors" title="Edit Data">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                             </a>
-                            <form action="<?php echo e(route('admin.daerah.destroy', $daerah->id)); ?>" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                            <form action="<?php echo e(route('admin.daerah.destroy', ['daerah' => $daerah->id])); ?>" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
                                 <?php echo csrf_field(); ?>
                                 <?php echo method_field('DELETE'); ?>
                                 <button type="submit" class="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors" title="Hapus Data">
@@ -71,14 +71,7 @@
                         </div>
                         <h3 class="mt-2 text-sm font-medium text-gray-900">Belum ada data</h3>
                         <p class="mt-1 text-sm text-gray-500">Mulai dengan menambahkan data alternatif baru.</p>
-                        <div class="mt-6">
-                            <a href="<?php echo e(route('admin.daerah.create')); ?>" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
-                                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-                                </svg>
-                                Tambah Data Baru
-                            </a>
-                        </div>
+
                     </td>
                 </tr>
                 <?php endif; ?>

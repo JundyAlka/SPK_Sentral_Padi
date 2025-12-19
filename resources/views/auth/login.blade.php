@@ -33,41 +33,7 @@
                 </div>
             </form>
 
-            <div class="mt-6">
-                <div class="relative">
-                    <div class="absolute inset-0 flex items-center">
-                        <div class="w-full border-t border-gray-300"></div>
-                    </div>
-                    <div class="relative flex justify-center text-sm">
-                        <span class="px-2 bg-white text-gray-500">
-                            Atau login cepat sebagai
-                        </span>
-                    </div>
-                </div>
-
-                <div class="mt-6 grid grid-cols-2 gap-3">
-                    <div>
-                        <button onclick="fillLogin('admin@gmail.com', 'admin123')" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                            <span class="sr-only">Sign in with</span>
-                            Admin
-                        </button>
-                    </div>
-
-                    <div>
-                        <button onclick="fillLogin('user@gmail.com', 'user123')" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                            <span class="sr-only">Sign in with</span>
-                            User
-                        </button>
-                    </div>
-                </div>
-                 
-                <div class="mt-4">
-                     <a href="{{ route('demo') }}" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        Masuk sebagai Tamu (Demo)
-                    </a>
-                </div>
-
-            </div>
+            <!-- Removed Role Selection Buttons -->
 
              <div class="mt-6 text-center">
                     <a href="{{ route('register') }}" class="font-medium text-green-600 hover:text-green-500">
@@ -76,11 +42,4 @@
             </div>
 @endsection
 
-@section('scripts')
-<script>
-    function fillLogin(email, password) {
-        document.getElementById('email').value = email;
-        document.getElementById('password').value = password;
-    }
-</script>
-@endsection
+

@@ -33,7 +33,7 @@
             <a href="{{ route('admin.daerah.index') }}" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
                 Batal
             </a>
-            <button type="submit" class="btn-primary px-6 py-3 rounded-lg text-white font-medium">
+            <button type="submit" class="px-6 py-3 rounded-lg text-white font-medium bg-emerald-600 hover:bg-emerald-700 transition duration-150 ease-in-out">
                 Simpan Data
             </button>
         </div>

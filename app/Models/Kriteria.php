@@ -9,7 +9,7 @@ class Kriteria extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nama_kriteria', 'jenis'];
+    protected $fillable = ['kode_kriteria', 'nama_kriteria', 'jenis'];
 
     public function bobotDefault()
     {
