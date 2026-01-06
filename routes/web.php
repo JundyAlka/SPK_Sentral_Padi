@@ -6,9 +6,8 @@ use App\Http\Controllers\DaerahController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\PerhitunganController;
-use App\Http\Controllers\GuestDaerahController;
-use App\Http\Controllers\GuestController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\PenilaianController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,9 +30,7 @@ Route::get('/demo', function () {
     return redirect()->route('user.dashboard'); 
 })->name('demo');
 
-    // Guest public routes
-    Route::get('/guest/daerah', [GuestDaerahController::class, 'index'])->name('guest.daerah');
-    Route::get('/guest/dashboard', [GuestController::class, 'dashboard'])->name('guest.dashboard');
+    // Guest public routes removed
 
 // Auth Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');

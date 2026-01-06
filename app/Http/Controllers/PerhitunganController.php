@@ -13,6 +13,15 @@ use Illuminate\Database\QueryException;
 
 class PerhitunganController extends Controller
 {
+    /**
+     * Menampilkan halaman awal fitur analisis untuk pengguna umum (User).
+     * 
+     * Fungsi ini mengambil data kriteria beserta bobot default-nya dari database
+     * untuk ditampilkan di form analisis, sehingga user tahu kriteria apa saja yang dinilai.
+     * Jika terjadi kesalahan database, akan menggunakan mock data (data dummy).
+     * 
+     * @return \Illuminate\View\View Menampilkan view 'user.analisis.index'
+     */
     public function index()
     {
         try {
@@ -23,6 +32,18 @@ class PerhitunganController extends Controller
         return view('user.analisis.index', compact('kriterias'));
     }
 
+    /**
+     * Memproses perhitungan Sistem Pendukung Keputusan (SPK) metode SAW.
+     * 
+     * Langkah-langkah:
+     * 1. Validasi input nama daerah dari form.
+     * 2. Memanggil fungsi private `hitungSAW()` untuk melakukan kalkulasi matematis.
+     * 3. Menyimpan log riwayat perhitungan ke database jika user sedang login.
+     * 4. Mengambil 5 daerah terbaik (Top 5) untuk ditampilkan sebagai rekomendasi.
+     * 
+     * @param Request $request Data input dari form
+     * @return \Illuminate\View\View Menampilkan hasil di 'user.analisis.hasil'
+     */
     public function proses(Request $request)
     {
         $request->validate([
@@ -55,6 +76,17 @@ class PerhitunganController extends Controller
         return view('user.analisis.hasil', compact('hasil', 'top5', 'namaDaerahInput', 'kriterias'));
     }
 
+    /**
+     * Menampilkan detail nilai perhitungan untuk satu daerah tertentu.
+     * 
+     * Fungsi ini berguna untuk transparansi, agar user bisa melihat detail:
+     * - Nilai asli (raw value)
+     * - Nilai hasil normalisasi
+     * - Nilai akhir setelah dikali bobot
+     * 
+     * @param int $daerah_id ID Daerah yang ingin dilihat detailnya
+     * @return \Illuminate\View\View Menampilkan view 'user.analisis.detail'
+     */
     public function detail($daerah_id)
     {
         $data = $this->hitungSAW();
@@ -69,7 +101,14 @@ class PerhitunganController extends Controller
         return view('user.analisis.detail', compact('detailDaerah', 'kriterias'));
     }
 
-    // Admin: Data Perhitungan
+    /**
+     * [ADMIN] Menampilkan seluruh data perhitungan secara lengkap.
+     * 
+     * Digunakan oleh Admin untuk memverifikasi kebenaran sistem.
+     * Menampilkan matriks keputusan awal, hasil normalisasi, dan hasil akhir.
+     * 
+     * @return \Illuminate\View\View Menampilkan view 'admin.perhitungan.index'
+     */
     public function dataPerhitungan()
     {
         $data = $this->hitungSAW();
@@ -79,7 +118,14 @@ class PerhitunganController extends Controller
         ]);
     }
 
-    // Admin: Data Hasil Akhir
+    /**
+     * [ADMIN] Menampilkan daftar hasil akhir perankingan.
+     * 
+     * Menampilkan daftar daerah yang sudah diurutkan dari nilai tertinggi ke terendah.
+     * Ini adalah output utama dari sistem SPK untuk pengambilan keputusan.
+     * 
+     * @return \Illuminate\View\View Menampilkan view 'admin.hasil.index'
+     */
     public function dataHasilAkhir()
     {
         $data = $this->hitungSAW();
@@ -87,6 +133,22 @@ class PerhitunganController extends Controller
         return view('admin.hasil.index', compact('hasil'));
     }
 
+    /**
+     * [CORE LOGIC] Fungsi Inti Perhitungan Metode SAW (Simple Additive Weighting).
+     * 
+     * Algoritma SAW:
+     * 1. Ambil data kriteria, bobot, dan nilai semua daerah.
+     * 2. Cari nilai Min/Max tiap kriteria untuk rumus normalisasi.
+     * 3. Lakukan Normalisasi Matriks (R):
+     *    - Jika Benefit: Nilai / Max
+     *    - Jika Cost: Min / Nilai
+     * 4. Hitung Nilai Preferensi (V):
+     *    - Sigma (Nilai Normalisasi * Bobot Kriteria)
+     * 5. Urutkan hasil dari nilai terbesar ke terkecil (Ranking).
+     * 
+     * @param string $namaDaerahInput (Opsional) Untuk keperluan simulasi nama
+     * @return array Mengembalikan array berisi 'hasil' (ranking) dan 'kriterias'
+     */
     private function hitungSAW($namaDaerahInput = '') {
         try {
             // Attempt to get Real Data
@@ -104,6 +166,11 @@ class PerhitunganController extends Controller
 
         $minMax = [];
         // Pre-calculate Min/Max (Works for both Real and Mock objects if structured consistently)
+        // ---------------------------------------------------------
+        // TAHAP PRE-CALCULATION: Menentukan Min/Max
+        // ---------------------------------------------------------
+        // Menyiapkan array untum menyimpan nilai minimum dan maksimum
+        // yang akan digunakan dalam rumus normalisasi.
         foreach ($kriterias as $k) {
             // Check if using Mock Object or Eloquent Model
             $isMock = !($k instanceof Kriteria);
@@ -117,6 +184,7 @@ class PerhitunganController extends Controller
                      $nilaiValues[] = $val ? $val->nilai : 0;
                  }
             } else {
+                // Ambil semua nilai dari database
                 $nilaiValues = NilaiDaerah::where('kriteria_id', $kId)->pluck('nilai')->toArray();
             }
 
@@ -124,8 +192,8 @@ class PerhitunganController extends Controller
                  $minMax[$kId] = ['min' => 0, 'max' => 0];
             } else {
                 $minMax[$kId] = [
-                    'min' => min($nilaiValues),
-                    'max' => max($nilaiValues),
+                    'min' => min($nilaiValues), // Nilai terendah
+                    'max' => max($nilaiValues), // Nilai tertinggi
                 ];
             }
         }
@@ -145,19 +213,33 @@ class PerhitunganController extends Controller
                 $bobotObj = $k->bobotDefault; // Works for both if mock structure matches
                 $bobot = $bobotObj->bobot ?? 0;
                 
+                // ---------------------------------------------------------
+                // TAHAP NORMALISASI (R Matrix)
+                // ---------------------------------------------------------
                 $normalisasi = 0;
                 $min = $minMax[$k->id]['min'];
                 $max = $minMax[$k->id]['max'];
 
-                if ($max > 0) { // Basic safety
+                if ($max > 0) { // Cek validasi pembagian nol
+                     // BENEFIT: Semakin besar semakin bagus (Profit, Luas Panen, dll)
+                     // Rumus: Nilai / Max
                      if ($k->jenis == 'benefit') {
                         $normalisasi = $nilai / $max;
-                    } else {
+                    } 
+                    // COST: Semakin kecil semakin bagus (Biaya, Jarak, Hama, dll)
+                    // Rumus: Min / Nilai
+                    else {
                         $normalisasi = ($nilai > 0) ? $min / $nilai : 0;
                     }
                 }
 
+                // ---------------------------------------------------------
+                // TAHAP PREFERENSI (V) / PERANGKINGAN
+                // ---------------------------------------------------------
+                // Skor Kriteria = Hasil Normalisasi * Bobot Kriteria
                 $skor = $normalisasi * $bobot;
+                
+                // Jumlahkan skor dari semua kriteria untuk mendapatkan Skor Total Daerah
                 $skorTotal += $skor;
 
                 $detailNilai[$k->id] = [
@@ -177,10 +259,19 @@ class PerhitunganController extends Controller
             ];
         }
 
+        // ---------------------------------------------------------
+        // TAHAP 5: Perankingan (Sorting)
+        // ---------------------------------------------------------
+        // Menggunakan fungsi `usort` (User-defined Sort) dari PHP.
+        // Logika: Membandingkan 'skor_total' antar dua item ($a dan $b).
+        // `return $b <=> $a` artinya urutkan dari BESAR ke KECIL (Descending).
+        // Daerah dengan skor tertinggi akan berada di urutan pertama (indeks 0).
         usort($hasil, function ($a, $b) {
             return $b['skor_total'] <=> $a['skor_total'];
         });
 
+        // Menambahkan atribut 'rank' ke dalam array hasil
+        // $index dimulai dari 0, jadi rank = $index + 1 (Juara 1, 2, 3, dst.)
         foreach ($hasil as $index => &$item) {
             $item['rank'] = $index + 1;
         }
@@ -188,11 +279,19 @@ class PerhitunganController extends Controller
         return ['hasil' => $hasil, 'kriterias' => $kriterias];
     }
     
+    // ---------------------------------------------------------
+    // FUNGSI BANTUAN DATA DUMMY (MOCK DATA)
+    // ---------------------------------------------------------
+    // Fungsi ini hanya digunakan jika koneksi database GAGAL atau tabel Kriteria KOSONG.
+    // Tujuannya agar aplikasi Tetap Bisa Jalan (fallback) saat presentasi/testing
+    // meskipun databasenya bermasalah.
     private function getMockKriterias() {
         return collect([
+            // Contoh Kriteria 1: Benefit (Semakin tinggi semakin bagus)
             (object)[ 'id' => 1, 'nama_kriteria' => 'Luas Panen (Contoh)', 'jenis' => 'benefit', 'bobotDefault' => (object)['bobot' => 0.35] ],
-            (object)[ 'id' => 2, 'nama_kriteria' => 'Produktivitas (Contoh)', 'jenis' => 'benefit', 'bobotDefault' => (object)['bobot' => 0.25] ],
+            // Contoh Kriteria : Cost (Semakin rendah semakin bagus)
             (object)[ 'id' => 3, 'nama_kriteria' => 'Curah Hujan (Contoh)', 'jenis' => 'cost', 'bobotDefault' => (object)['bobot' => 0.20] ],
+            (object)[ 'id' => 2, 'nama_kriteria' => 'Produktivitas (Contoh)', 'jenis' => 'benefit', 'bobotDefault' => (object)['bobot' => 0.25] ],
             (object)[ 'id' => 4, 'nama_kriteria' => 'Hama (Contoh)', 'jenis' => 'cost', 'bobotDefault' => (object)['bobot' => 0.20] ],
         ]);
     }

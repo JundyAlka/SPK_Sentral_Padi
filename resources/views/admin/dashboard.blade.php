@@ -6,43 +6,52 @@
     <!-- Stats Overview -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <!-- Alternatif Card -->
-        <div class="bg-white rounded-lg shadow p-6 border-l-4 border-emerald-500">
-            <div class="flex items-center">
-                <div class="p-3 rounded-full bg-emerald-100 text-emerald-600">
-                    <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                </div>
-                <div class="ml-4">
-                    <p class="mb-2 text-sm font-medium text-gray-600">Data Alternatif</p>
-                    <p class="text-lg font-semibold text-gray-700">{{ $daerahCount }} Daerah</p>
+        <!-- Alternatif Card -->
+        <a href="{{ route('admin.daerah.index') }}" class="group transform hover:-translate-y-1 transition-all duration-300">
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-emerald-500 group-hover:shadow-lg">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-emerald-100 text-emerald-600 group-hover:bg-emerald-200 transition-colors">
+                        <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="mb-2 text-sm font-medium text-gray-600">Data Alternatif</p>
+                        <p class="text-lg font-semibold text-gray-700">{{ $daerahCount }} Daerah</p>
+                    </div>
                 </div>
             </div>
-        </div>
+        </a>
 
         <!-- Kriteria Card -->
-        <div class="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500">
-            <div class="flex items-center">
-                <div class="p-3 rounded-full bg-blue-100 text-blue-600">
-                    <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                </div>
-                <div class="ml-4">
-                    <p class="mb-2 text-sm font-medium text-gray-600">Data Kriteria</p>
-                    <p class="text-lg font-semibold text-gray-700">{{ $kriteriasCount }} Kriteria</p>
+        <!-- Kriteria Card -->
+        <a href="{{ route('admin.kriteria.index') }}" class="group transform hover:-translate-y-1 transition-all duration-300">
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500 group-hover:shadow-lg">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-blue-100 text-blue-600 group-hover:bg-blue-200 transition-colors">
+                        <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="mb-2 text-sm font-medium text-gray-600">Data Kriteria</p>
+                        <p class="text-lg font-semibold text-gray-700">{{ $kriteriasCount }} Kriteria</p>
+                    </div>
                 </div>
             </div>
-        </div>
+        </a>
 
         <!-- Users Card -->
-        <div class="bg-white rounded-lg shadow p-6 border-l-4 border-purple-500">
-            <div class="flex items-center">
-                <div class="p-3 rounded-full bg-purple-100 text-purple-600">
-                    <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                </div>
-                <div class="ml-4">
-                    <p class="mb-2 text-sm font-medium text-gray-600">Total Pengguna</p>
-                    <p class="text-lg font-semibold text-gray-700">{{ $usersCount }} User</p>
+        <!-- Users Card -->
+        <a href="{{ route('admin.user.index') }}" class="group transform hover:-translate-y-1 transition-all duration-300">
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500 group-hover:shadow-lg">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-purple-100 text-purple-600 group-hover:bg-purple-200 transition-colors">
+                        <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="mb-2 text-sm font-medium text-gray-600">Total Pengguna</p>
+                        <p class="text-lg font-semibold text-gray-700">{{ $usersCount }} User</p>
+                    </div>
                 </div>
             </div>
-        </div>
+        </a>
         
         <!-- System Status Card -->
         <div class="bg-white rounded-lg shadow p-6 border-l-4 border-yellow-500">
@@ -144,7 +153,7 @@
         <div>
              <div class="bg-white rounded-xl shadow p-6 h-full">
                 <h3 class="text-lg font-bold text-gray-800 mb-4">Grafik Perankingan</h3>
-                <div class="relative h-64">
+                <div class="relative h-[450px]">
                     <canvas id="adminRankingChart"></canvas>
                 </div>
             </div>
